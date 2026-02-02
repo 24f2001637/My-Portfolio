@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sahil Bind - Data Science Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --bg-color: #FFFFFF;
-            --card-bg-color: #f3f3f3;
-            --text-color: #333;
-            --header-bg-color: #1e1e1e;
-            --header-text-color: #e0e0e0;
-            --accent-color: #888;
+            /* Color System */
+            --bg-color: #0f172a;
+            --card-bg-color: rgba(30, 41, 59, 0.7);
+            --header-bg-color: rgba(15, 23, 42, 0.85);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.05);
+
+            /* Spacing & Layout */
+            --container-max-width: 1200px;
+            --header-height: 80px;
+            --radius-lg: 24px;
+            --radius-md: 16px;
         }
 
         html {
@@ -31,123 +43,201 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+            color: var(--text-primary);
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align to top for scrolling */
             min-height: 100vh;
-            padding: 2rem;
+            padding: 2rem 1rem;
+            line-height: 1.6;
         }
 
-        /* Main container for the portfolio card */
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Main Container */
         .portfolio-container {
             position: relative;
             width: 100%;
-            max-width: 1200px;
-            height: auto;
+            max-width: var(--container-max-width);
             background-color: var(--card-bg-color);
-            border-radius: 40px;
-            padding: 0 5rem 5rem 5rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            border: var(--glass-border);
+            padding: 0;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         /* Header Navigation */
         .portfolio-header {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 4rem);
+            max-width: var(--container-max-width);
             background-color: var(--header-bg-color);
-            padding: 1.5rem 3rem;
-            border-bottom-right-radius: 40px;
-            z-index: 100; /* Ensure header is on top */
+            backdrop-filter: blur(10px);
+            padding: 1rem 3rem;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            z-index: 1000;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 3rem;
+            border-bottom: var(--glass-border);
         }
+
+        /* Adjusted for smaller viewports where the fixed header needs to match */
+        @media (min-width: 1201px) {
+            .portfolio-header {
+                /* Match container width exactly when centered */
+                width: 1200px;
+            }
+        }
+
 
         .logo {
             font-family: 'Anton', sans-serif;
-            color: var(--header-text-color);
-            font-size: 1.2rem;
-            letter-spacing: 1px;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .main-nav {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .main-nav a {
-            color: var(--accent-color);
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 500;
             text-transform: uppercase;
-            transition: color 0.3s ease;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
         }
 
         .main-nav a:hover,
         .main-nav a.active {
-            color: var(--header-text-color);
+            color: var(--text-primary);
         }
 
-        /* Corner cutout effect using a pseudo-element */
-        .portfolio-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 200px;
-            height: 200px;
-            background-color: var(--header-bg-color);
-            border-bottom-left-radius: 100px;
-            z-index: 5;
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
         }
-        
-       /* Download Icon */
+
+        /* Download Icon */
         .download-icon {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
+            position: fixed;
+            bottom: 3rem;
+            right: 3rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: #0f172a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 15px -3px var(--accent-glow);
+            border: none;
+        }
+
+        .download-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 20px 25px -5px var(--accent-glow);
+        }
+
+        .download-icon svg {
             width: 24px;
             height: 24px;
-            color: var(--accent-color);
-            z-index: 10;
-            cursor: pointer;
-            transition: color 0.3s ease;
         }
-        .download-icon:hover {
-            color: var(--text-color);
+
+        /* Main Content Wrapper */
+        main {
+            width: 100%;
+            padding: 0 5rem 5rem 5rem;
+            padding-top: var(--header-height);
+            /* Offset fixed header */
         }
 
         /* Section Styling */
         .portfolio-section {
-            padding-top: 5rem;
-            padding-bottom: 5rem;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .portfolio-section:last-of-type {
             border-bottom: none;
         }
-        
+
         #home {
-            padding-top: 10rem;
+            min-height: 90vh;
             display: flex;
             align-items: center;
-            gap: 2rem;
-            width: 100%;
-            z-index: 2;
-            min-height: 100vh;
-            border-bottom: none; /* No border after home */
+            justify-content: space-between;
+            gap: 4rem;
         }
 
         .content-left {
-            flex: 1.2;
-            padding-right: 2rem;
+            flex: 1;
         }
 
         .content-right {
@@ -155,53 +245,63 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100%;
+            position: relative;
         }
 
-        /* Text Styling */
+        /* Typography */
         h1 {
             font-family: 'Anton', sans-serif;
-            font-size: 6rem;
-            line-height: 1;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
+            font-size: 7rem;
+            line-height: 0.9;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
             text-transform: uppercase;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
         }
 
         h2 {
             font-size: 1.5rem;
             font-weight: 400;
-            color: var(--text-color);
-            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.5px;
         }
 
         .social-icons {
             display: flex;
-            gap: 1.25rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .social-icons a {
-            color: var(--accent-color);
-            display: inline-block;
-            transition: color 0.3s ease, transform 0.3s ease;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .social-icons a:hover {
-            color: var(--text-color);
-            transform: translateY(-2px);
+            color: var(--accent-color);
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
         }
 
         .social-icons svg {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
         }
 
         .content-left p {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--accent-color);
-            max-width: 500px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 540px;
         }
 
         /* Section Title */
@@ -209,144 +309,192 @@
             font-family: 'Anton', sans-serif;
             font-size: 4rem;
             text-transform: uppercase;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: var(--text-color);
+            margin-bottom: 4rem;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
         }
 
-        /* Skills Section */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            right: -20px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-glow);
+            border-radius: 50%;
+            filter: blur(20px);
+            z-index: -1;
+        }
+
+        /* Skills Grid */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .skill-item {
-            background-color: #fff;
-            padding: 1.5rem;
-            text-align: center;
-            border-radius: 10px;
-            border: 1px solid #eee;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .skill-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .skill-item svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-        }
-
-        .skill-item h3 {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        /* Generic Grid for Certs/Awards */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .info-card {
-            background-color: #fff;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid #eee;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-        .info-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-        .info-card p {
-            font-size: 0.9rem;
-            color: var(--accent-color);
-        }
-        
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 2rem;
         }
 
+        .skill-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem 1rem;
+            text-align: center;
+            border-radius: var(--radius-md);
+            border: var(--glass-border);
+            transition: all 0.4s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-8px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+        }
+
+        .skill-item svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .skill-item:hover svg {
+            color: var(--accent-color);
+        }
+
+        .skill-item h3 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
         .project-card {
-            background-color: #fff;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            border: 1px solid #eee;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: var(--glass-border);
+            transition: all 0.4s ease;
             display: flex;
             flex-direction: column;
         }
-        
+
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
         }
-        
+
         .project-card img {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
+            transition: transform 0.6s ease;
+            opacity: 0.9;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.05);
+            opacity: 1;
         }
 
         .project-content {
-            padding: 1.5rem;
+            padding: 2rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         .project-content h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
         }
 
         .project-content p {
-            font-size: 0.9rem;
-            color: var(--accent-color);
-            line-height: 1.5;
-            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
             flex-grow: 1;
         }
-        
+
         .project-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
         .project-tags span {
-            background-color: #e9e9e9;
-            color: #555;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.2);
         }
-        
-        /* Contact Section */
+
+        /* Standard Info Card (Experience/Education) */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            border: var(--glass-border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .info-card:hover::before {
+            opacity: 1;
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* Contact Form */
         .contact-form {
-            max-width: 700px;
-            margin: 0 auto;
+            max-width: 600px;
+            margin: 0;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -356,169 +504,240 @@
             display: flex;
             gap: 1.5rem;
         }
-        
+
         .contact-form input,
         .contact-form textarea {
             width: 100%;
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid #ddd;
+            padding: 1.2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             font-family: 'Inter', sans-serif;
             font-size: 1rem;
-            background-color: #fff;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
         }
 
         .contact-form input:focus,
         .contact-form textarea:focus {
             outline: none;
-            border-color: var(--text-color);
-            box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
+            border-color: var(--accent-color);
+            background-color: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .submit-btn {
-            background-color: var(--text-color);
-            color: var(--card-bg-color);
+            background-color: var(--text-primary);
+            color: #0f172a;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
+            padding: 1rem 3rem;
+            border-radius: var(--radius-md);
             font-family: 'Inter', sans-serif;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            align-self: center;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .submit-btn:hover {
-            background-color: #555;
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px var(--accent-glow);
         }
 
         /* Footer */
         .portfolio-footer {
             text-align: center;
-            padding-top: 3rem;
-            color: var(--accent-color);
+            padding: 4rem 0 0 0;
+            color: var(--text-secondary);
             font-size: 0.9rem;
+            opacity: 0.6;
         }
-        
-        /* Image container */
+
+        /* Image Styling */
         .image-container {
             position: relative;
             width: 100%;
-            max-width: 380px;
-            aspect-ratio: 2 / 3;
-            filter: grayscale(100%);
-            transition: filter 0.5s ease;
+            max-width: 400px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 20px 20px 0px rgba(255, 255, 255, 0.05);
+            transition: all 0.5s ease;
         }
+
         .image-container:hover {
-            filter: grayscale(0%);
+            transform: translate(5px, 5px);
+            box-shadow: 10px 10px 0px var(--accent-color);
         }
 
         .image-container img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .date-tag {
-            position: absolute;
-            bottom: -15px;
-            right: 20px;
-            background-color: var(--card-bg-color);
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            border: 1px solid #ddd;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: auto;
+            display: block;
+            filter: grayscale(100%) contrast(1.1);
+            transition: filter 0.5s ease;
         }
 
-        /* Decorative background elements */
-        .background-year {
-            position: absolute;
-            top: 55vh; /* position relative to viewport height */
-            left: 20%;
-            transform: translateY(-50%) rotate(-90deg);
-            font-family: 'Anton', sans-serif;
-            font-size: 20rem;
-            color: rgba(0, 0, 0, 0.04);
-            z-index: 1;
-            line-height: 1;
-            user-select: none;
-            pointer-events: none; /* Make it unclickable */
+        .image-container:hover img {
+            filter: grayscale(0%) contrast(1);
         }
-        
-        .vertical-text {
+
+        .date-tag {
             position: absolute;
-            top: 50vh;
-            right: -60px;
-            transform: translateY(-50%) rotate(90deg);
-            writing-mode: horizontal-tb;
-            color: var(--accent-color);
+            bottom: 0;
+            right: 0;
+            background-color: var(--accent-color);
+            color: #0f172a;
+            padding: 0.8rem 1.5rem;
             font-size: 0.8rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            z-index: 5;
-            user-select: none;
+            border-top-left-radius: var(--radius-md);
+        }
+
+        /* Decorative Background Elements */
+        .background-year {
+            position: fixed;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%) rotate(90deg);
+            font-family: 'Anton', sans-serif;
+            font-size: 15rem;
+            color: rgba(255, 255, 255, 0.02);
+            z-index: 0;
+            line-height: 1;
             pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .vertical-text {
+            display: none;
+            /* Removed to clean up UI */
+        }
+
+        /* Hidden elements for design purity */
+        .portfolio-container::before {
+            display: none;
         }
 
         /* Responsive Design */
-        @media (max-width: 1200px) {
-            h1 { font-size: 5rem; }
-            h2 { font-size: 1.25rem; }
-            .content-left p { font-size: 0.9rem; }
-            .background-year { font-size: 15rem; left: 15%;}
-        }
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 5rem;
+            }
 
-        @media (max-width: 992px) {
-            body { padding: 1rem; }
-            .portfolio-container {
-                padding: 0 2rem 2rem 2rem;
+            .portfolio-header {
+                width: calc(100% - 2rem);
+                top: 1rem;
+                padding: 1rem 2rem;
             }
+
+            body {
+                padding: 1rem;
+            }
+
+            main {
+                padding: 0 2rem 4rem 2rem;
+            }
+
             #home {
+                flex-direction: column-reverse;
+                /* Image on top on mobile usually better, or keep as is? Let's keep text top for stronger intro */
                 flex-direction: column;
-                gap: 3rem;
-                padding-top: 8rem;
-                min-height: auto;
                 text-align: center;
+                justify-content: center;
+                gap: 3rem;
+                padding-top: 4rem;
             }
+
             .content-left {
-                padding-right: 0;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
             }
-            h1 { font-size: 4rem; }
-            .background-year, .vertical-text, .scroll-arrow { display: none; }
-            .portfolio-container::before { width: 100px; height: 100px; border-bottom-left-radius: 50px;}
-            .portfolio-header { padding: 1rem 1.5rem; gap: 1.5rem; flex-wrap: wrap; }
-            .logo { font-size: 1rem; }
-            .main-nav a { font-size: 0.7rem; }
-            .content-right { margin-bottom: 2rem; }
-            .section-title { font-size: 3rem; }
+
+            .content-left p {
+                text-align: center;
+            }
+
+            .image-container {
+                max-width: 300px;
+                margin: 0 auto;
+                box-shadow: 15px 15px 0px rgba(255, 255, 255, 0.05);
+            }
+
+            .background-year {
+                display: none;
+            }
+
+            .contact-form {
+                margin: 0 auto;
+            }
+
+            .submit-btn {
+                align-self: center;
+            }
         }
 
-        @media (max-width: 576px) {
-            body { padding: 0.5rem; }
-            .portfolio-container { border-radius: 20px; padding: 0 1.5rem 1.5rem 1.5rem; }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+                margin-bottom: 2.5rem;
+            }
+
+            .main-nav {
+                display: none;
+                /* Should implement mobile menu, but for now let's just wrap or hide. Let's wrap. */
+            }
+
             .portfolio-header {
                 flex-direction: column;
                 gap: 1rem;
-                border-radius: 0 0 30px 0;
-                align-items: flex-start;
+                height: auto;
                 padding: 1rem;
+                position: relative;
+                top: 0;
+                width: 100%;
+                border-radius: var(--radius-lg);
             }
-            #home { padding-top: 12rem; }
-            h1 { font-size: 3rem; }
-            h2 { font-size: 1.1rem; }
-            .main-nav { flex-wrap: wrap; gap: 0.5rem 1rem;}
-            .contact-form .form-group { flex-direction: column; }
-        }
 
+            main {
+                padding-top: 2rem;
+            }
+
+            .download-icon {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .main-nav {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <div class="portfolio-container">
@@ -535,8 +754,10 @@
 
         <!-- Download Resume Icon -->
         <a href="resume.pdf" download="resume.pdf" class="download-icon" aria-label="Download Resume">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
             </svg>
         </a>
 
@@ -545,114 +766,285 @@
             <!-- Home Section -->
             <section id="home" class="portfolio-section">
                 <div class="content-left">
-                    <h1>SAHIL BIND*</h1>
-                    <h2>BS in Data Science and Applications @ IIT Madras</h2>
+                    <h1>SAHIL BIND</h1>
+                    <h2>IIT Madras'28 | Data Science and Applications | INSPIRE SHE Scholar | BSc.(Mathematics)</h2>
                     <div class="social-icons">
-                        <a href="https://www.linkedin.com/in/sahil-bind-24f2001637" target="_blank" aria-label="LinkedIn">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.75c0-1.4-.5-2.25-1.75-2.25S12.5 13.1 12.5 14.25V19h-3v-9h3V11c.75-1.4 2-2 3.5-2 2.5 0 4.5 1.6 4.5 5.25z"></path></svg>
+                        <a href="https://www.linkedin.com/in/sahil-bind-24f2001637" target="_blank"
+                            aria-label="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.75c0-1.4-.5-2.25-1.75-2.25S12.5 13.1 12.5 14.25V19h-3v-9h3V11c.75-1.4 2-2 3.5-2 2.5 0 4.5 1.6 4.5 5.25z">
+                                </path>
+                            </svg>
                         </a>
                         <a href="https://github.com/24f2001637" aria-label="GitHub">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.577.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z"></path></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.577.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z">
+                                </path>
+                            </svg>
                         </a>
                         <a href="https://x.com/SAHIL13IND" aria-label="X (formerly Twitter)">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                                </path>
+                            </svg>
                         </a>
-                        <a href="https://www.instagram.com/a.i.sahilbind/" aria-label="Instagram">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85c.148-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.947s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z"></path></svg>
+                        <a href="https://www.instagram.com/sahilb.ind/" aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85c.148-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.947s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z">
+                                </path>
+                            </svg>
                         </a>
                         <a href="https://www.facebook.com/profile.php?id=61576213845401" aria-label="Facebook">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"></path></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z">
+                                </path>
+                            </svg>
                         </a>
                     </div>
                     <p>
-                        I'm Sahil Bind, currently pursuing a BSc in Data Science and Applications at IIT Madras, along with BSc in Mathematics from DDU Gorakhpur University. My interests lie at the intersection of Al, Machine Learning, Python development, and practical problem-solving using tech. I'm a strong believer in continuous learning and hands-on practice.
+                        I'm Sahil Bind, currently pursuing a BSc in Data Science and Applications at IIT Madras and a
+                        BSc in Mathematics from DDU Gorakhpur University. I'm passionate about AI, Machine Learning, and
+                        full-stack development. I work with Python, Flask, SQL, and DSA, with a strong focus on Machine
+                        Learning and Linux environments.
                     </p>
                 </div>
                 <div class="content-right">
                     <div class="image-container">
                         <img img src="images/sahil_b&w.jpg" alt="Sahil" width="300">
 
-                        <div class="date-tag">SEPTEMBER 2025</div>
+                        <div class="date-tag">JANUARY 2026</div>
                     </div>
                 </div>
             </section>
-            
+
             <!-- Skills Section -->
             <section id="skills" class="portfolio-section">
                 <h2 class="section-title">My Skills</h2>
                 <div class="skills-grid">
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg><h3>Python</h3></div>
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg><h3>JavaScript</h3></div>
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125H20.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h17.25M12 15.75v-1.5" /></svg><h3>SQL</h3></div>
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-1.621-.87a3 3 0 0 1-.879-2.122v-1.007" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A9.035 9.035 0 0 1 12 4.5c-2.291 0-4.345.867-5.998 2.286m11.996 0a9.035 9.035 0 0 1-5.998 2.286c-2.291 0-4.345-.867-5.998-2.286m11.996 0A9.035 9.035 0 0 0 12 4.5c-2.291 0-4.345-.867-5.998-2.286m5.998 12.786a9.035 9.035 0 0 1-5.998-2.286M12 21a9.035 9.035 0 0 0 5.998-2.286M12 4.5v16.5" /></svg><h3>Machine Learning</h3></div>
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" /></svg><h3>Data Science</h3></div>
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg><h3>HTML</h3></div>
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg><h3>CSS</h3></div>
-                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" /></svg><h3>Git</h3></div>
+                    <!-- Languages -->
+                    <div class="skill-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+                        </svg>
+                        <h3>Python</h3>
+                    </div>
+                    <div class="skill-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+                        </svg>
+                        <h3>JavaScript</h3>
+                    </div>
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125H20.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h17.25M12 15.75v-1.5" />
+                        </svg>
+                        <h3>SQL</h3>
+                    </div>
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+                        </svg>
+                        <h3>HTML/CSS</h3>
+                    </div>
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                        <h3>Bash</h3>
+                    </div>
+
+                    <!-- Frameworks -->
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                        </svg>
+                        <h3>Flask</h3>
+                    </div>
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                        </svg>
+                        <h3>Vue.js</h3>
+                    </div>
+
+                    <!-- ML/DS -->
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-1.621-.87a3 3 0 0 1-.879-2.122v-1.007" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.362 5.214A9.035 9.035 0 0 1 12 4.5c-2.291 0-4.345.867-5.998 2.286m11.996 0a9.035 9.035 0 0 1-5.998 2.286c-2.291 0-4.345-.867-5.998-2.286m11.996 0A9.035 9.035 0 0 0 12 4.5c-2.291 0-4.345-.867-5.998-2.286m5.998 12.786a9.035 9.035 0 0 1-5.998-2.286M12 21a9.035 9.035 0 0 0 5.998-2.286M12 4.5v16.5" />
+                        </svg>
+                        <h3>Machine Learning</h3>
+                    </div>
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                        </svg>
+                        <h3>Data Science</h3>
+                    </div>
+
+                    <!-- Tools -->
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                        </svg>
+                        <h3>Databases</h3>
+                    </div>
+                    <div class="skill-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                        </svg>
+                        <h3>Git/Linux</h3>
+                    </div>
                 </div>
             </section>
 
             <!-- Projects Section -->
+            <!-- Projects Section -->
             <section id="projects" class="portfolio-section">
                 <h2 class="section-title">My Projects</h2>
                 <div class="projects-grid">
-                    <div class="project-card"><img img src="images/Vehicle-Parking-V1.png" alt="Vehicle-Parking-V1" width="300"><div class="project-content"><h3>Vehicle-Parking-V1</h3><p>Developed a comprehensive, full-stack web application built with Flask for managing vehicle parking lots.</p><div class="project-tags"><span>Flask</span><span>SQLite</span><span>HTML</span><span>CSS</span><span>JavaScript</span></div></div></div>
-                    <div class="project-card"><img img src="images/ToDo App.png" alt="ToDo-App" width="300"><div class="project-content"><h3>Task Manager</h3><p>Built a responsive ToDo App that allows users to add, update, and delete tasks while tracking progress through status indicators like Pending, Working, and Completed.</p><div class="project-tags"><span>Flask</span><span>SQLite</span><span>HTML</span><span>CSS</span></div></div></div>
-                    <div class="project-card"><img img src="images/working.jpeg" alt="working" width="300"><div class="project-content"><h3>ML Project</h3><p>Working on an ML project.</p><div class="project-tags"><span>Python</span><span>Scikit-Learn</span><span>Pandas</span></div></div></div>
+                    <!-- Vehicle Parking -->
+                    <div class="project-card">
+                        <img img src="images/Vehicle-Parking-V1.png" alt="Vehicle-Parking-V1">
+                        <div class="project-content">
+                            <h3>Vehicle Parking App - V1</h3>
+                            <p>A multi-user application designed to manage parking lots, spots, and vehicles. It
+                                differentiates between administrators and standard users to ensure secure management of
+                                parking resources. <em>Associated with Indian Institute of Technology, Madras</em>.</p>
+                            <div class="project-tags">
+                                <span>Flask</span><span>SQLAlchemy</span><span>SQLite</span><span>Bootstrap</span><span>Jinja2</span><span>Git</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task Manager -->
+                    <div class="project-card">
+                        <img img src="images/ToDo App.png" alt="ToDo-App">
+                        <div class="project-content">
+                            <h3>Task Manager</h3>
+                            <p>Built a functional To-Do list web app focusing on clean design and CRUD functionality.
+                                Users can register, log in, and manage personal tasks securely via sessions.</p>
+                            <div class="project-tags">
+                                <span>Flask</span><span>SQLAlchemy</span><span>SQLite</span><span>HTML/CSS</span><span>Bootstrap</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HMS App -->
+                    <div class="project-card">
+                        <img img src="images/working.jpeg" alt="News App">
+                        <div class="project-content">
+                            <h3>Hospital Management App</h3>
+                            <p> Building a Hospital Management System (HMS) web application that allows Admins, Doctors, and Patients to interact with the system based on their roles.</p>
+                            <div class="project-tags"><span>Flask</span><span>REST
+                                    API</span><span>JavaScript</span><span>Vue.js</span><span>Bootstrap</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Portfolio -->
+                    <div class="project-card">
+                        <img img src="images/working.jpeg" alt="Portfolio">
+                        <div class="project-content">
+                            <h3>My-Portfolio</h3>
+                            <p>Designed and built a personal portfolio website to showcase academic achievements,
+                                projects, and skills using clean, semantic web technologies.</p>
+                            <div class="project-tags"><span>HTML5</span><span>CSS</span><span>JavaScript</span></div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
+            <!-- Experience Section -->
             <!-- Experience Section -->
             <section id="experience" class="portfolio-section">
                 <h2 class="section-title">Experience</h2>
                 <div class="info-grid">
                     <div class="info-card">
-                        <h3>Subject Matter Expert</h3>
-                        <p>Chegg Inc. | Apr 2025 - Aug 2025</p>
+                        <h3>Perplexity AI</h3>
+                        <p><strong>Perplexity Campus Partner (Remote)</strong> | Aug 2025 - Nov 2025</p>
+                        <p>Introduced AI tools like Comet to the university community, supporting research and
+                            collaboration.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Chegg Inc.</h3>
+                        <p><strong>Subject Matter Expert (Remote)</strong> | Apr 2025 - Aug 2025</p>
                     </div>
                 </div>
             </section>
-            
+
+            <!-- Education Section -->
             <!-- Education Section -->
             <section id="education" class="portfolio-section">
                 <h2 class="section-title">Education</h2>
                 <div class="info-grid">
                     <div class="info-card">
                         <h3>Indian Institute of Technology, Madras</h3>
-                        <p>Bachelor of Science - BS, Data Science and Applications (2024 - 2028)</p>
+                        <p>BS in Data Science and Applications (2024 - 2028)</p>
                     </div>
                     <div class="info-card">
-                        <h3>Deen Dayal Upadhyaya Gorakhpur University</h3>
-                        <p>Bachelor's degree, Mathematics (2024 - 2028)</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Government Inter College Deoria</h3>
-                        <p>Intermediate, PCM (2022 - 2024)</p>
+                        <h3>DDU Gorakhpur University</h3>
+                        <p>BSc. Mathematics (2024 - 2028)</p>
                     </div>
                 </div>
             </section>
+
 
             <!-- Certifications Section -->
             <section id="certifications" class="portfolio-section">
                 <h2 class="section-title">Certifications</h2>
                 <div class="info-grid">
-                    <div class="info-card"><h3>Foundation Level in Programming & Data Science</h3></div>
-                    <div class="info-card"><h3>Web Design & Development</h3></div>
-                    <div class="info-card"><h3>Front-end Web Development</h3></div>
-                    <div class="info-card"><h3>Python</h3></div>
-                    <div class="info-card"><h3>SQL</h3></div>
-                    <div class="info-card"><h3>AI-Machine Learning Engineer Foundation Course</h3></div>
+                    <div class="info-card">
+                        <h3>AI-ML Engineer Foundation (Reliance)</h3>
+                    </div>
+                    <div class="info-card">
+                        <h3>Python Basic (HackerRank)</h3>
+                    </div>
+                    <div class="info-card">
+                        <h3>Front-end Web Development (Reliance)</h3>
+                    </div>
+                    <div class="info-card">
+                        <h3>Foundation Level in Data Science (IITM)</h3>
+                    </div>
                 </div>
             </section>
-            
+
             <!-- Honors & Awards Section -->
             <section id="awards" class="portfolio-section">
                 <h2 class="section-title">Honors & Awards</h2>
                 <div class="info-grid">
-                    <div class="info-card"><h3>Selected for INSPIRE Scholarship for Higher Education (SHE)</h3></div>
-                    <div class="info-card"><h3>Intermediate (Class XII) Topper, GIC Deoria</h3></div>
-                    <div class="info-card"><h3>District Topper, NASTA 2023</h3></div>
-
+                    <div class="info-card">
+                        <h3>Selected for INSPIRE Scholarship for Higher Education (SHE)</h3>
+                    </div>
+                    <div class="info-card">
+                        <h3>Intermediate (Class XII) Topper, GIC Deoria</h3>
+                    </div>
+                    <div class="info-card">
+                        <h3>District Topper, NASTA 2023</h3>
+                    </div>
+                    <div class="info-card">
+                        <h3>2nd Rank - Jawaharlal Nehru Science Exhibition</h3>
+                    </div>
                 </div>
             </section>
 
@@ -672,17 +1064,14 @@
 
         <!-- Footer -->
         <footer class="portfolio-footer">
-            <p>&copy; 2025 Sahil Bind. All Rights Reserved.</p>
+            <p>&copy; 2026 Sahil Bind. All Rights Reserved.</p>
         </footer>
 
         <!-- Decorative Background Elements -->
-        <div class="background-year">2025</div>
-        <div class="vertical-text">Sahil Bind / Portfolio 2025</div>
+        <div class="background-year">2026</div>
+        <div class="vertical-text">Sahil Bind / Portfolio 2026</div>
     </div>
 
 </body>
+
 </html>
-
-
-
-
