@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sahil Bind — Portfolio</title>
+<title>Sahil Bind</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
@@ -63,6 +63,7 @@ nav{
   font-weight:800;font-size:1.1rem;
   letter-spacing:0.05em;
   color:var(--text);
+  text-decoration:none;
 }
 
 .nav-logo span{color:var(--accent);}
@@ -78,7 +79,9 @@ nav{
   transition:color 0.2s;
 }
 
-.nav-links a:hover{color:var(--accent);}
+/* FIX: active nav link style was missing */
+.nav-links a:hover,
+.nav-links a.active{color:var(--accent);}
 
 .nav-cta{
   font-family:'Syne',sans-serif;
@@ -90,6 +93,46 @@ nav{
 }
 
 .nav-cta:hover{opacity:0.85;}
+
+/* ── HAMBURGER (mobile) ── */
+.nav-hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;gap:5px;
+  width:36px;height:36px;cursor:pointer;
+  background:none;border:none;padding:4px;
+}
+.nav-hamburger span{
+  display:block;height:2px;border-radius:2px;
+  background:var(--text);transition:all 0.3s;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* Mobile drawer */
+.mobile-menu{
+  display:none;
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(8,12,16,0.97);
+  z-index:99;
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:2rem;
+}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{
+  font-family:'Syne',sans-serif;
+  font-size:1.6rem;font-weight:700;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:0.05em;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.mobile-menu a:hover{color:var(--accent);}
+.mobile-menu .mobile-cta{
+  font-size:1rem;font-weight:600;
+  color:var(--bg);background:var(--accent);
+  padding:0.7rem 2rem;border-radius:2px;
+  margin-top:1rem;
+}
 
 /* ── HERO ── */
 #hero{
@@ -107,6 +150,7 @@ nav{
     linear-gradient(90deg,rgba(74,240,196,0.04) 1px,transparent 1px);
   background-size:60px 60px;
   mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black,transparent);
+  -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black,transparent);
 }
 
 .hero-glow{
@@ -315,6 +359,7 @@ h1,h2,h3,h4{margin:0;font-weight:400;}
   border-radius:2px;
   background:var(--surface2);
   transition:all 0.15s;
+  cursor:default;
 }
 
 .skill-tag:hover{border-color:var(--accent);color:var(--accent);}
@@ -323,7 +368,7 @@ h1,h2,h3,h4{margin:0;font-weight:400;}
 #projects{background:var(--surface);}
 
 .projects-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:1.5rem;
 }
 
@@ -391,16 +436,19 @@ h1,h2,h3,h4{margin:0;font-weight:400;}
 .timeline{display:flex;flex-direction:column;gap:0;max-width:700px;}
 
 .timeline-item{
-  display:grid;grid-template-columns:140px 1fr;
-  gap:2rem;
+  display:grid;grid-template-columns:140px 20px 1fr;
+  gap:1rem;
   padding-bottom:2.5rem;
   position:relative;
 }
 
+/* FIX: use grid column 2 for the dot track line */
 .timeline-item:not(:last-child)::before{
   content:'';
   position:absolute;
-  left:139px;top:8px;bottom:0;
+  /* centre of the dot column (column 2, 140px + 1rem + 10px offset) */
+  left:calc(140px + 1rem + 9px);
+  top:14px;bottom:0;
   width:1px;background:var(--border);
 }
 
@@ -408,18 +456,19 @@ h1,h2,h3,h4{margin:0;font-weight:400;}
   font-size:0.78rem;color:var(--muted);
   font-weight:400;padding-top:0.2rem;
   text-align:right;letter-spacing:0.02em;
+  white-space:nowrap;
 }
 
 .timeline-dot{
-  position:absolute;
-  left:132px;top:6px;
   width:15px;height:15px;border-radius:50%;
   background:var(--bg);
   border:2px solid var(--accent);
-  z-index:1;
+  margin-top:4px;
+  position:relative;z-index:1;
+  flex-shrink:0;
 }
 
-.timeline-content{padding-left:1rem;}
+.timeline-content{}
 
 .timeline-role{
   font-family:'Syne',sans-serif;
@@ -509,15 +558,16 @@ h1,h2,h3,h4{margin:0;font-weight:400;}
 
 .contact-links{display:flex;flex-direction:column;gap:0.75rem;}
 
+/* FIX: removed duplicate transition property */
 .contact-link{
   display:flex;align-items:center;gap:0.75rem;
   color:var(--muted);text-decoration:none;
-  font-size:0.9rem;transition:color 0.2s;
+  font-size:0.9rem;
   padding:0.75rem 1rem;
   border:1px solid var(--border);
   border-radius:4px;
   background:var(--surface2);
-  transition:all 0.2s;
+  transition:color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .contact-link:hover{color:var(--accent);border-color:rgba(74,240,196,0.3);}
@@ -553,11 +603,16 @@ h1,h2,h3,h4{margin:0;font-weight:400;}
   padding:0.8rem 1rem;
   outline:none;
   transition:border-color 0.2s;
-  resize:none;
+  /* FIX: allow vertical resize for textarea */
+  resize:vertical;
+  width:100%;
 }
 
 .form-field input:focus,
 .form-field textarea:focus{border-color:rgba(74,240,196,0.5);}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder{color:var(--muted);opacity:0.6;}
 
 .form-submit{
   font-family:'Syne',sans-serif;
@@ -570,6 +625,21 @@ h1,h2,h3,h4{margin:0;font-weight:400;}
 }
 
 .form-submit:hover{background:var(--accent2);}
+.form-submit:disabled{opacity:0.6;cursor:not-allowed;}
+
+/* Form feedback */
+.form-feedback{
+  font-size:0.85rem;padding:0.75rem 1rem;border-radius:4px;
+  display:none;
+}
+.form-feedback.success{
+  display:block;background:rgba(74,240,196,0.1);
+  color:var(--accent);border:1px solid rgba(74,240,196,0.3);
+}
+.form-feedback.error{
+  display:block;background:rgba(240,90,106,0.1);
+  color:var(--red);border:1px solid rgba(240,90,106,0.3);
+}
 
 /* ── FOOTER ── */
 footer{
@@ -577,6 +647,7 @@ footer{
   border-top:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:center;
   position:relative;z-index:1;
+  flex-wrap:wrap;gap:0.5rem;
 }
 
 .footer-text{font-size:0.8rem;color:var(--muted);}
@@ -584,20 +655,26 @@ footer{
 
 /* ── PHOTO PLACEHOLDER ── */
 .hero-photo-wrap{
-  position:absolute;right:8rem;top:40%;transform:translateY(-50%);
+  position:absolute;right:8rem;top:50%;transform:translateY(-50%);
   z-index:1;
 }
 .hero-photo{
-  width:400px;height:400px;border-radius:50%;
+  width:380px;height:380px;border-radius:50%;
   border:2px solid rgba(74,240,196,0.4);
   background:var(--surface2);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:0.5rem;overflow:hidden;position:relative;
 }
-.hero-photo img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;}
+.hero-photo img{
+  width:100%;height:100%;object-fit:cover;border-radius:50%;
+  display:none;
+}
 .hero-photo img.loaded{display:block;}
+/* FIX: placeholder hidden when image loads */
+.hero-photo img.loaded ~ .hero-photo-placeholder{display:none;}
 .hero-photo-placeholder{
   display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  pointer-events:none;
 }
 .hero-photo-placeholder svg{width:48px;height:48px;color:var(--muted);}
 .hero-photo-placeholder span{font-size:0.7rem;color:var(--muted);letter-spacing:0.05em;}
@@ -605,10 +682,12 @@ footer{
   position:absolute;inset:-8px;border-radius:50%;
   border:1px dashed rgba(74,240,196,0.2);
   animation:spin 20s linear infinite;
+  /* prevent ring from blocking overflow clip */
+  pointer-events:none;
 }
 @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 
-/* ── PROJECT IMAGE PLACEHOLDER ── */
+/* ── PROJECT IMAGE ── */
 .project-img{
   width:100%;height:160px;
   background:var(--surface);
@@ -616,8 +695,14 @@ footer{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:0.5rem;overflow:hidden;position:relative;
 }
-.project-img img{width:100%;height:100%;object-fit:cover;display:none;}
+.project-img img{
+  width:100%;height:100%;object-fit:cover;
+  display:none;
+  position:absolute;inset:0;
+}
 .project-img img.loaded{display:block;}
+/* FIX: hide placeholder after image loads via CSS sibling selector */
+.project-img img.loaded ~ .project-img-placeholder{display:none;}
 .project-img-placeholder{display:flex;flex-direction:column;align-items:center;gap:0.4rem;}
 .project-img-placeholder svg{width:32px;height:32px;color:var(--muted);opacity:0.5;}
 .project-img-placeholder span{font-size:0.68rem;color:var(--muted);opacity:0.5;letter-spacing:0.06em;}
@@ -626,6 +711,7 @@ footer{
 .hero-socials{
   display:flex;gap:0.75rem;margin-top:1.5rem;
   animation:fadeUp 0.6s 0.35s ease both;
+  flex-wrap:wrap;
 }
 .social-icon{
   width:38px;height:38px;border-radius:4px;
@@ -642,24 +728,78 @@ footer{
 .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
 .reveal.visible{opacity:1;transform:none;}
 
-/* ── RESPONSIVE ── */
+/* ── RESPONSIVE: tablet (≤900px) ── */
 @media(max-width:900px){
   nav{padding:1rem 2rem;}
   .nav-links{display:none;}
+  .nav-hamburger{display:flex;}
+  .nav-cta{display:none;}
+
   #hero{padding:7rem 2rem 3rem;}
   section{padding:4rem 2rem;}
-  .about-grid,.edu-grid,.contact-wrapper{grid-template-columns:1fr;}
+
+  .about-grid,
+  .edu-grid,
+  .contact-wrapper{grid-template-columns:1fr;}
+
   .hero-stats{gap:2rem;}
+
   footer{padding:1.5rem 2rem;flex-direction:column;gap:0.5rem;text-align:center;}
+
   .hero-photo-wrap{display:none;}
+
+  .form-row{grid-template-columns:1fr;}
+}
+
+/* ── RESPONSIVE: small mobile (≤480px) ── */
+@media(max-width:480px){
+  #hero{padding:6rem 1.25rem 2.5rem;}
+  section{padding:3rem 1.25rem;}
+
+  .hero-title{font-size:clamp(1.9rem,9vw,2.4rem);}
+
+  .hero-stats{gap:1.5rem;}
+  .stat-num{font-size:1.5rem;}
+
+  .projects-grid{grid-template-columns:1fr;}
+
+  .awards-grid{grid-template-columns:1fr;}
+
+  .timeline-item{
+    grid-template-columns:1fr;
+    padding-left:1.5rem;
+    border-left:1px solid var(--border);
+    position:relative;
+  }
+  .timeline-item:not(:last-child)::before{display:none;}
+  .timeline-dot{
+    position:absolute;left:-8px;top:4px;
+    width:14px;height:14px;
+  }
+  .timeline-date{text-align:left;}
+
+  .contact-wrapper{gap:2.5rem;}
+
+  footer{padding:1.5rem 1.25rem;}
 }
 </style>
 </head>
 <body>
 
+<!-- MOBILE DRAWER -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#education" onclick="closeMenu()">Education</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="mailto:sahilbind.iitm@gmail.com" class="mobile-cta">Hire Me</a>
+</div>
+
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">SB<span>.</span></div>
+  <a href="#hero" class="nav-logo">SB<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -668,7 +808,11 @@ footer{
     <li><a href="#education">Education</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="/cdn-cgi/l/email-protection#e390828b8a8f818a8d87d7d6d4a3848e828a8fcd808c8e" class="nav-cta">Hire Me</a>
+  <!-- FIX: restored working mailto link -->
+  <a href="mailto:sahilbind.iitm@gmail.com" class="nav-cta">Hire Me</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -678,7 +822,12 @@ footer{
   <div class="hero-photo-wrap">
     <div class="hero-photo">
       <div class="hero-photo-ring"></div>
-      <img src="images/pfp.png" alt="Sahil Bind" onload="this.classList.add('loaded');this.nextElementSibling.style.display='none'">
+      <img src="images/pfp.png" alt="Sahil Bind" onload="this.classList.add('loaded')">
+      <!-- FIX: placeholder now hidden via CSS sibling selector when image loads -->
+      <div class="hero-photo-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Photo</span>
+      </div>
     </div>
   </div>
   <div class="hero-content">
@@ -697,19 +846,20 @@ footer{
       <a href="#contact" class="btn-ghost">Get In Touch</a>
     </div>
     <div class="hero-socials">
-      <a href="mailto:sahilbind457@gmail.com" class="social-icon" title="Email">
+      <!-- FIX: all Cloudflare-obfuscated email hrefs replaced with proper mailto: -->
+      <a href="mailto:sahilbind.iitm@gmail.com" class="social-icon" title="Email">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
       </a>
-      <a href="https://www.linkedin.com/in/sahilbind-24f2001637" target="_blank" class="social-icon" title="LinkedIn">
+      <a href="https://www.linkedin.com/in/sahilbind-24f2001637" target="_blank" rel="noopener" class="social-icon" title="LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
       </a>
-      <a href="https://github.com/24f2001637" target="_blank" class="social-icon" title="GitHub">
+      <a href="https://github.com/24f2001637" target="_blank" rel="noopener" class="social-icon" title="GitHub">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
       </a>
-      <a href="https://twitter.com/SAHIL13IND" target="_blank" class="social-icon" title="Twitter / X">
+      <a href="https://twitter.com/SAHIL13IND" target="_blank" rel="noopener" class="social-icon" title="Twitter / X">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
-      <a href="https://www.instagram.com/sahilb.ind" target="_blank" class="social-icon" title="Instagram">
+      <a href="https://www.instagram.com/sahilb.ind" target="_blank" rel="noopener" class="social-icon" title="Instagram">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
       </a>
     </div>
@@ -846,7 +996,7 @@ footer{
 
     <div class="project-card">
       <div class="project-img">
-        <img src="images/Vehicle-Parking-V1.png" alt="Vehicle Parking App" onload="this.classList.add('loaded');this.nextElementSibling.style.display='none'">
+        <img src="images/Vehicle-Parking-V1.png" alt="Vehicle Parking App" onload="this.classList.add('loaded')">
         <div class="project-img-placeholder">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M3 9h18M9 21V9"/></svg>
           <span>Project screenshot</span>
@@ -872,7 +1022,7 @@ footer{
 
     <div class="project-card">
       <div class="project-img">
-        <img src="images/task-manager.png" alt="Task Manager App" onload="this.classList.add('loaded');this.nextElementSibling.style.display='none'">
+        <img src="images/task-manager.png" alt="Task Manager App" onload="this.classList.add('loaded')">
         <div class="project-img-placeholder">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M3 9h18M9 21V9"/></svg>
           <span>Project screenshot</span>
@@ -897,7 +1047,7 @@ footer{
 
     <div class="project-card">
       <div class="project-img">
-        <img src="images/hms.png" alt="Hospital Management System" onload="this.classList.add('loaded');this.nextElementSibling.style.display='none'">
+        <img src="images/hms.png" alt="Hospital Management System" onload="this.classList.add('loaded')">
         <div class="project-img-placeholder">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M3 9h18M9 21V9"/></svg>
           <span>Project screenshot</span>
@@ -922,7 +1072,7 @@ footer{
 
     <div class="project-card">
       <div class="project-img">
-        <img src="images/portfolio.png" alt="Portfolio" onload="this.classList.add('loaded');this.nextElementSibling.style.display='none'">
+        <img src="images/portfolio.png" alt="Portfolio" onload="this.classList.add('loaded')">
         <div class="project-img-placeholder">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M3 9h18M9 21V9"/></svg>
           <span>Project screenshot</span>
@@ -1047,19 +1197,20 @@ footer{
       <h2 class="section-title">Get In Touch</h2>
       <p>I'm always open to discussions, collaborations, internships, and new ideas. Whether you have a project in mind or just want to connect — drop me a message.</p>
       <div class="contact-links">
-        <a href="mailto:sahilbind457@gmail.com" class="contact-link">
+        <!-- FIX: restored proper mailto: link -->
+        <a href="mailto:sahilbind.iitm@gmail.com" class="contact-link">
           <div class="contact-link-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
           </div>
-          sahilbind457@gmail.com
+          sahilbind.iitm@gmail.com
         </a>
-        <a href="https://www.linkedin.com/in/sahilbind-24f2001637" target="_blank" class="contact-link">
+        <a href="https://www.linkedin.com/in/sahilbind-24f2001637" target="_blank" rel="noopener" class="contact-link">
           <div class="contact-link-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           </div>
           linkedin.com/in/sahilbind
         </a>
-        <a href="https://github.com/sahilbind" target="_blank" class="contact-link">
+        <a href="https://github.com/sahilbind" target="_blank" rel="noopener" class="contact-link">
           <div class="contact-link-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
           </div>
@@ -1067,26 +1218,28 @@ footer{
         </a>
       </div>
     </div>
-    <form class="contact-form-side" onsubmit="handleSubmit(event)">
+    <!-- FIX: form submit now has a complete, working handleSubmit function -->
+    <form class="contact-form-side" id="contactForm" onsubmit="handleSubmit(event)">
       <div class="form-row">
         <div class="form-field">
-          <label>Name</label>
-          <input type="text" placeholder="Your name" required>
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" required>
         </div>
         <div class="form-field">
-          <label>Email</label>
-          <input type="email" placeholder="your@email.com" required>
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="your@email.com" required>
         </div>
       </div>
       <div class="form-field">
-        <label>Subject</label>
-        <input type="text" placeholder="What's this about?">
+        <label for="subject">Subject</label>
+        <input id="subject" type="text" placeholder="What's this about?">
       </div>
       <div class="form-field">
-        <label>Message</label>
-        <textarea rows="5" placeholder="Tell me more..."></textarea>
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" placeholder="Tell me more..." required></textarea>
       </div>
-      <button type="submit" class="form-submit">Send Message →</button>
+      <div class="form-feedback" id="formFeedback"></div>
+      <button type="submit" class="form-submit" id="formSubmit">Send Message →</button>
     </form>
   </div>
 </section>
@@ -1098,7 +1251,21 @@ footer{
 </footer>
 
 <script>
-// Scroll reveal — more reliable version
+// ── MOBILE MENU ──
+function toggleMenu(){
+  const menu = document.getElementById('mobileMenu');
+  const burger = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  burger.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+function closeMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── SCROLL REVEAL ──
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
@@ -1110,7 +1277,7 @@ const observer = new IntersectionObserver((entries) => {
 },{threshold:0.05, rootMargin:'0px 0px -40px 0px'});
 reveals.forEach(r => observer.observe(r));
 
-// Fallback: if page is scrolled or items already visible on load
+// Fallback for items already in viewport on load
 setTimeout(() => {
   reveals.forEach(r => {
     const rect = r.getBoundingClientRect();
@@ -1118,7 +1285,7 @@ setTimeout(() => {
   });
 }, 100);
 
-// Active nav link
+// ── ACTIVE NAV LINK ──
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll', () => {
@@ -1129,14 +1296,44 @@ window.addEventListener('scroll', () => {
   navLinks.forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === '#' + current);
   });
-});
+}, {passive: true});
 
-// Form submit
-function handleSubmit(e){
-  e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  btn.textContent = 'Sent! ✓';
-  btn.style.background = '#4af0c4';
-  setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; e.target.reset(); }, 3000);
+// ── FORM SUBMIT ── (FIX: function was cut off mid-word "fun")
+function handleSubmit(event){
+  event.preventDefault();
+  const btn = document.getElementById('formSubmit');
+  const feedback = document.getElementById('formFeedback');
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const message = document.getElementById('message').value.trim();
+
+  // Basic validation
+  if(!name || !email || !message){
+    feedback.textContent = 'Please fill in all required fields.';
+    feedback.className = 'form-feedback error';
+    return;
+  }
+
+  // Simulate sending (replace with your backend/EmailJS/Formspree endpoint)
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  feedback.className = 'form-feedback';
+
+  // Build mailto as fallback (opens mail client)
+  const subject = document.getElementById('subject').value.trim() || 'Portfolio Contact';
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+  const mailtoLink = `mailto:sahilbind.iitm@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+  // Simulate async, then open mailto
+  setTimeout(() => {
+    window.location.href = mailtoLink;
+    feedback.textContent = '✓ Your mail client should open. If not, email me directly at sahilbind.iitm@gmail.com';
+    feedback.className = 'form-feedback success';
+    btn.disabled = false;
+    btn.textContent = 'Send Message →';
+    event.target.reset();
+  }, 600);
 }
 </script>
+</body>
+</html>
